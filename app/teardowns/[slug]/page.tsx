@@ -86,6 +86,7 @@ export default async function TeardownPage({ params }: PageProps) {
             source={teardown.content}
             components={mdxComponents}
             options={{
+              blockJS: false,
               mdxOptions: { remarkPlugins: [remarkGfm], rehypePlugins: [rehypeSlug] },
             }}
           />

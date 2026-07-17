@@ -74,6 +74,9 @@ export default async function ProjectPage({ params }: PageProps) {
             source={project.content}
             components={mdxComponents}
             options={{
+              // Trusted, first-party content — allow JS expressions in MDX
+              // (component props like options={[...]}). v6 blocks these by default.
+              blockJS: false,
               mdxOptions: {
                 remarkPlugins: [remarkGfm],
                 rehypePlugins: [rehypeSlug],

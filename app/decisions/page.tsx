@@ -76,7 +76,7 @@ export default function DecisionsPage() {
                     <MDXRemote
                       source={d.content}
                       components={mdxComponents}
-                      options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+                      options={{ blockJS: false, mdxOptions: { remarkPlugins: [remarkGfm] } }}
                     />
                   </div>
                 </article>
