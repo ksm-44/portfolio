@@ -1,0 +1,26 @@
+---
+title: "Cut bank auto-import from FinBot"
+date: "2026-05-01"
+status: "validated"
+tldr: "Chat-based manual capture, if under 10 seconds, beats error-prone automation."
+---
+
+## Hypothesis
+
+Chat-based manual capture, if under 10 seconds, beats error-prone automation.
+
+## Evidence
+
+Auto-import scoping showed each integration was slow to build and broke
+silently; missed cash/split transactions are exactly what makes balances drift
+and kills trust.
+
+## Result
+
+1,000+ transactions logged in 2 months with zero balance drift; cash and splits
+actually get captured.
+
+## What I'd do differently
+
+Kill the auto-import option a week earlier. I scoped it longer than the
+evidence justified.

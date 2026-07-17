@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Aether — Semantic Context Engine.
+  Retro-futurist dark system: warm near-black ground (#1C0F0A), a single hot
+  accent (#FF7A3D), glass surfaces with orange hairlines, Chakra Petch display
+  type over Fira Code body. Dark is the canonical theme; light is a warm-paper
+  adaptation of the same roles.
+*/
+/* Light (warm paper) — the base. Must come BEFORE .dark: the selectors have
+   equal specificity, so source order decides which wins when .dark is set. */
+:root {
+  --surface: 251 239 230;
+  --surface-raised: 255 248 242;
+  --surface-overlay: 243 228 216;
+  --ink: 20 10 8;
+  --ink-muted: 94 62 48;
+  --ink-faint: 158 126 108;
+  --accent: 226 97 47;          /* #E2612F for light-ground contrast */
+  --accent-soft: 250 226 210;
+  --line: 226 200 184;
+}
+
+/* Dark — the canonical Aether theme. */
+.dark {
+  --surface: 28 15 10;          /* #1C0F0A background */
+  --surface-raised: 20 10 8;    /* #140A08 neutral foundation */
+  --surface-overlay: 42 24 17;
+  --ink: 251 239 230;           /* #FBEFE6 text primary */
+  --ink-muted: 216 186 168;
+  --ink-faint: 158 126 108;
+  --accent: 255 122 61;         /* #FF7A3D */
+  --accent-soft: 58 30 18;      /* #3A1E12 */
+  --line: 82 48 34;             /* orange hairline over dark ground */
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface text-ink antialiased;
+  }
+
+  h1 {
+    @apply font-display uppercase;
+  }
+  h2,
+  h3 {
+    @apply font-display;
+  }
+
+  ::selection {
+    @apply bg-accent text-surface;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-1 ring-accent ring-offset-2 ring-offset-surface;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Aether card recipe: glass ground, orange hairline, 10px blur. */
+  .glass {
+    @apply rounded-xl border border-accent/15 bg-surface-raised/70 backdrop-blur-[10px];
+  }
+
+  /* Chakra Petch label: 12px / 600 / 1.8px tracking / uppercase. */
+  .microlabel {
+    @apply font-display text-xs font-semibold uppercase tracking-label text-ink-faint;
+  }
+
+  .prose-custom {
+    @apply max-w-measure text-sm font-light leading-[1.7] text-ink-muted;
+  }
+  .prose-custom h2 {
+    @apply mb-4 mt-14 scroll-mt-24 font-display text-xl font-bold uppercase tracking-tightest text-ink;
+  }
+  .prose-custom h3 {
+    @apply mb-3 mt-9 scroll-mt-24 font-display text-base font-semibold text-ink;
+  }
+  .prose-custom p {
+    @apply mb-5;
+  }
+  .prose-custom a {
+    @apply text-accent underline decoration-accent/40 underline-offset-[3px] transition-colors hover:decoration-accent;
+  }
+  .prose-custom ul {
+    @apply mb-5 list-disc space-y-2 pl-5 marker:text-accent/60;
+  }
+  .prose-custom ol {
+    @apply mb-5 list-decimal space-y-2 pl-5 marker:text-accent/60;
+  }
+  .prose-custom strong {
+    @apply font-medium text-ink;
+  }
+  .prose-custom blockquote {
+    @apply my-6 border-l-2 border-accent pl-5 text-ink;
+  }
+  .prose-custom code {
+    @apply rounded-sm bg-surface-overlay px-1.5 py-0.5 text-[13px] text-accent;
+  }
+  .prose-custom pre {
+    @apply mb-6 overflow-x-auto rounded-lg border border-accent/15 bg-surface-overlay p-4;
+  }
+  .prose-custom pre code {
+    @apply bg-transparent p-0;
+  }
+  .prose-custom table {
+    @apply mb-6 w-full border-collapse text-sm;
+  }
+  .prose-custom th {
+    @apply border-b border-accent/40 px-3 py-2 text-left font-display text-xs font-semibold uppercase tracking-label text-ink;
+  }
+  .prose-custom td {
+    @apply border-b border-line px-3 py-2;
+  }
+  .prose-custom hr {
+    @apply my-12 border-line;
+  }
+}

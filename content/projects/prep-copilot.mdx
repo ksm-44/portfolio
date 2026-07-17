@@ -1,0 +1,91 @@
+---
+title: "Prep Copilot: an interview coach that remembers your entire job search"
+summary: "A local-first, multi-agent career copilot whose per-application memory makes Round-3 prep automatically aware of what happened in Rounds 1 and 2."
+date: "2026-06-15"
+role: "Solo PM, designer & builder"
+company: "Personal project"
+tags: ["AI Agents", "Local-first", "0→1"]
+metrics:
+  - { label: "company applications managed end to end", value: "6" }
+  - { label: "mock interviews run, scored against rubrics, weakness trends tracked", value: "30+" }
+  - { label: "marginal cost vs. $150–300/hr coaching; personal data on-device by default", value: "~$0" }
+featured: true
+---
+
+<Tldr
+  problem="ChatGPT-style chats are amnesiac across a months-long, multi-round job search; coaches solve continuity at $150–300/hour."
+  outcome="Full campaign context per application with zero re-pasting and zero cross-company bleed; Round-N prep auto-loads prior rounds."
+/>
+
+<CaseToc />
+
+## Problem
+
+A PM job search is a multi-round, multi-company campaign over months.
+ChatGPT-style chats are amnesiac: ask for Round 2 prep and the model knows
+nothing about Round 1's questions, the recruiter's feedback, or where your
+mocks scored poorly. You re-paste context every session and it still bleeds
+between companies. Prep platforms teach identical frameworks to everyone.
+Coaches solve continuity at $150–300/hour.
+
+The job-to-be-done isn't "answer my question." It's "remember my search."
+
+## Constraints
+
+Resume, career history, and mock performance are among the most sensitive
+documents a person owns, so cloud-by-default was off the table. Job seekers are
+often between paychecks, so recurring AI spend had to stay near zero. Solo build.
+
+## Decision
+
+<DecisionPoint
+  question="Cloud models are smarter and faster. Personal data is radioactive. How do you route?"
+  options={[
+    "Cloud everything — best output quality",
+    "Local everything — perfect privacy",
+    "Routing layer with a hard rule in code: if sensitive → stay local",
+  ]}
+  actual={2}
+>
+  Cloud everything means every mock transcript and resume revision goes to a
+  third party; a privacy policy is a promise, not a guarantee. Local everything
+  means local 4B/8B models doing heavy synthesis like company research visibly
+  worse — and users feel it. The routing layer uses a local 4B for
+  classification, a local 8B for interactive mocks, cloud opt-in for
+  non-personal synthesis only, plus a "copy assembled prompt" escape hatch to
+  use chat subscriptions you already pay for. Effective marginal cost ~$0,
+  nothing personal leaves the machine by default, and the quality gap only
+  shows where it doesn't hurt.
+</DecisionPoint>
+
+Memory is the product. Every application gets an isolated workspace backed by
+three-tier memory: SQLite for queryable state, the filesystem for
+human-readable artifacts, ChromaDB for semantic retrieval — namespaced per
+company so context never bleeds. The payoff is the continuity rule: before any
+Round-N prep, the orchestrator loads Round-(N−1) questions, interviewer
+feedback, and low-scoring mock categories automatically. That's the behavior of
+a coach, and it's impossible in a chat window.
+
+A scope call worth defending: shipped 4 of 6 agents. The wedge was the
+continuity loop — the one thing no alternative had — not feature parity with
+prep platforms. The reranker, voice mode, and analytics were deferred with a
+documented migration path. The assignment coach deliberately refuses to write
+finished answers; it guides a 7-step method instead, because a candidate who
+submits AI-written work fails the onsite.
+
+## Outcome
+
+Full campaign context per application with zero re-pasting and zero
+cross-company bleed. Round-N prep auto-loads prior rounds. Mock scorecards show
+per-category weakness trends over time.
+
+What went wrong: local-first has real costs I accepted but underestimated —
+mock sessions on the 8B model are noticeably slower than a cloud chat, and two
+of the six agents still aren't shipped. The refuse-to-write assignment coach
+also feels less magical than a chatbot. I'd make that trade again.
+
+## Learning
+
+Memory is the product, not the model. Continuity beat model quality everywhere
+it mattered, and the feedback loop — log real outcomes, and the next round's
+prep gets sharper — matters more than any individual feature.

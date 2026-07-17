@@ -1,0 +1,92 @@
+---
+title: "FinBot: a finance tracker people don't abandon, because logging takes ten seconds"
+summary: "A chat-native personal finance system that removes the reason money-tracking fails: the logging itself."
+date: "2026-07-01"
+role: "Solo PM & builder"
+company: "Personal project"
+tags: ["Fintech", "LLM", "0→1"]
+metrics:
+  - { label: "capture time per transaction", value: "60s → <10s" }
+  - { label: "transactions logged in 2 months of daily use, across 6 real accounts", value: "1,000+" }
+  - { label: "to run, deployed 24/7", value: "₹0/mo" }
+featured: true
+---
+
+<Tldr
+  problem="Almost everyone abandons expense trackers within weeks because logging costs a minute of effort, many times a day — and auto-import fails the Indian context."
+  outcome="In daily use as my primary money system: 1,000+ transactions in 2 months, zero balance drift by design, ₹0/month to run."
+/>
+
+<CaseToc />
+
+## Problem
+
+Thousands of expense trackers exist and almost everyone abandons them within
+weeks. Every tracker makes the same demand: open an app, tap through five
+screens, pick a category, type an amount. That's a minute of effort, eight to
+ten times a day. People skip one entry, the balance stops matching reality,
+trust collapses, the app gets deleted.
+
+Auto-import apps fix the effort but fail the Indian context: they miss cash and
+UPI-to-friend flows, can't represent Splitwise-style shared expenses, and
+require handing complete financial history to a third party.
+
+The job was never "track my expenses." It was "capture what I just spent, in
+the two seconds I'm willing to give it, without trusting anyone else with my data."
+
+## Constraints
+
+One person, two weeks, zero budget. No bank API partnerships available to an
+individual. Had to run on free-tier compute and a free LLM tier or the ₹0/month
+positioning dies.
+
+## Decision
+
+<DecisionPoint
+  question="What's the capture mechanism for a tracker that must not be abandoned?"
+  options={[
+    "Auto-import (SMS parsing + spending-app integrations) — zero user effort",
+    "A native mobile app with a fast entry form — better UX than incumbents",
+    "A Telegram bot with an LLM parser — text it the way you'd text a friend",
+  ]}
+  actual={2}
+>
+  Auto-import was my original plan, but each integration is slow to build,
+  breaks silently when formats change, and still misses cash and split
+  expenses — the exact transactions that make balances drift. Error-prone
+  automation is worse than none, because it destroys trust in the numbers. A
+  native app is still a new app to open and a new habit to form, and habit
+  formation is the whole failure mode. So: users text "Zomato 300 from BOB" the
+  way they'd text a friend. No new app, no new habit; the LLM handles 11 intent
+  types including splits and corrections. Capture became fast enough that cash
+  and split expenses — the ones every tracker misses — actually get logged.
+</DecisionPoint>
+
+The second structural call: a double-entry ledger instead of a list of
+expenses. Every transaction posts entries against accounts; balances are the
+sum of entries, so transfers, splits, and card payments balance by
+construction. Trust in the numbers is the retention mechanic, so correctness
+was architected in, not patched on.
+
+Privacy works the same way — through ownership, not policy. The entire
+financial history lives in a single SQLite file on the user's own free-tier
+server, with nightly backups to their own Google Drive. There is no company
+server to trust.
+
+## Outcome
+
+In daily use as my primary money system: every rupee across 6 accounts (banks,
+cash, credit card, Splitwise) flows through it. 1,000+ transactions in 2
+months. Zero balance drift by design. ~2,600 lines of Python from zero to
+production in two weeks, plus a self-hosting replication guide.
+
+What went wrong: I spent early effort scoping the auto-import path before
+admitting it was a dead end for a solo builder. That was time I could have
+spent on the parser. The insights engine also shipped later than it should
+have — for the first weeks the product captured well but told me nothing.
+
+## Learning
+
+Friction, not features, kills this category. The winning move was instrumenting
+a behavior people already have — narrating spending in chat — instead of
+demanding a new one.

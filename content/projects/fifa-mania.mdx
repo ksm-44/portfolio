@@ -1,0 +1,94 @@
+---
+title: "FIFA Mania: one person, 104 World Cup matches, zero unreviewed posts"
+summary: "A real-time sports content engine run on a 16GB laptop with a $0 data budget, a hard editorial gate, and a villain character as the distribution strategy."
+date: "2026-06-01"
+role: "Solo PM & builder/operator"
+company: "Personal project"
+tags: ["AI Content", "Automation", "0→1"]
+metrics:
+  - { label: "matches covered by one person, across three platforms", value: "104" }
+  - { label: "marginal cost per post (local inference, free-tier data, 100 API calls/day)", value: "~$0" }
+  - { label: "unreviewed posts published — the gate held by architecture, not discipline", value: "0" }
+featured: true
+---
+
+<Tldr
+  problem="A World Cup moment goes stale in ~30 minutes; media houses cover it with newsrooms of 20+, and 'just use ChatGPT' produces same-voiced, occasionally hallucinated posts."
+  outcome="One person sustained newsroom-scale coverage for 39 straight days at ~$0 marginal cost, with zero unreviewed posts across 104 matches."
+/>
+
+<CaseToc />
+
+## Problem
+
+During a World Cup, a moment goes stale in about 30 minutes. A solo creator
+can't watch 104 matches, pull stats, design a post in team colours, and publish
+repeatedly for 39 days; media houses do it with newsrooms of 20+. And "just use
+ChatGPT" produces what floods every feed: same-voiced, occasionally
+hallucinated posts that platforms downrank.
+
+The real problem: give one person a newsroom's coverage capacity without
+sacrificing editorial voice or factual accountability.
+
+## Constraints
+
+16GB of total memory on one Mac — the LLM (~6GB), image generation (~6GB), and
+video rendering can't coexist. 100 free API calls/day against 104 matches. Live
+positional data is a paid enterprise product I couldn't afford. And AI content
+can't be fully trusted, so publishing couldn't be autonomous.
+
+Each constraint forced a decision: a job queue instead of a swarm (one heavy
+process resident at a time), offline overnight art batches with millisecond
+compositing on the hot path, cached responses with explicit
+coverage-prioritization scoring, and two honest animation modes —
+clearly-labelled stylized recreations from coarse live data, full-fidelity
+showcases from free historical data. Scoping the truthful version instead of
+overpromising is the decision I'm proudest of in this build.
+
+## Decision
+
+<DecisionPoint
+  question="The pipeline can render and post autonomously. Do you let it?"
+  options={[
+    "Full auto-publish — maximum speed inside the 30-minute virality window",
+    "Auto-publish with spot checks — faster, mostly safe",
+    "Mandatory human gate — every render needs explicit approval",
+  ]}
+  actual={2}
+>
+  For a brand built on factual receipts, one hallucinated stat costs more
+  credibility than 50 posts earn — and with spot checks, "mostly" is the
+  problem, because the failure mode is silent and public. So every render lands
+  on my phone via Telegram with Approve / Reject / Revise buttons; Revise feeds
+  notes back into regeneration. Architecturally there is no path to publish
+  without approval. Zero unreviewed posts went out across the whole tournament,
+  and keeping platform uploads manual in v1 also cut a 2–4 week app-review
+  dependency off the critical path.
+</DecisionPoint>
+
+Distribution did more work than the model: an original villain character, "El
+Víbora," who attacks hype with contradicting stats — governed by a safety
+policy written before launch, not after an incident: stats and tactics only,
+never identity, nationality, or appearance. Public pre-match predictions
+revisited post-match, win or lose, because accountability compounds trust in a
+way hot takes can't. And an IPL-crossover content line as an Indian-market
+wedge no global page could copy.
+
+## Outcome
+
+One person sustained newsroom-scale coverage for 39 straight days at ~$0
+marginal cost. The 16GB constraint produced an architecture that was cheaper
+and more reliable than the cloud version would have been.
+
+What went wrong, honestly: I never instrumented the approve/reject funnel, so I
+have no approval-rate number and no labelled dataset for prompt tuning — a
+self-inflicted analytics gap that a PM of all people should not have shipped.
+And I built the IPL-crossover pipeline before validating demand with even 10
+manual posts; I automated ahead of the demand signal.
+
+## Learning
+
+Constraints shape better products than budgets. Every hard limit — memory, API
+quota, missing data — forced a decision that made the system cheaper, more
+honest, or more reliable. The AI was the least interesting component, which is
+the point.

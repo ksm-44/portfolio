@@ -1,0 +1,93 @@
+---
+title: "FamilyOS: validating a household operating system before writing the app"
+summary: "I sized, scoped, and waitlist-tested an all-in-one household management platform, and killed my own pricing model in the process."
+date: "2026-07-15"
+role: "Solo PM (strategy, research, roadmap, landing page)"
+company: "Personal project"
+tags: ["Strategy", "Validation", "Consumer"]
+metrics:
+  - { label: "feature roadmap, prioritized P0–P2", value: "22" }
+  - { label: "families on the waitlist from a landing page alone", value: "60+" }
+  - { label: "TAM sized in the business plan (plan-stage estimate)", value: "$13.4B" }
+featured: true
+---
+
+<Tldr
+  problem="Families run their lives across a dozen disconnected apps; the real risk wasn't buildability, it was whether anyone would change their habits."
+  outcome="60+ waitlist families with no paid acquisition, a 22-feature P0–P2 roadmap, and a pricing model I had to kill and rebuild for the Indian market."
+/>
+
+<CaseToc />
+
+## Problem
+
+Families run their lives across a dozen apps that don't talk to each other: one
+calendar for school, another for activities, bills in one app, receipts in an
+inbox, medical records in a portal, warranties in a drawer. The cost is
+concrete: missed renewals, expired warranties, subscriptions nobody uses, and
+hours of weekly coordination work that lands unevenly on one family member.
+
+I wrote a full business plan and PRD before building anything, because the risk
+here was never "can this be built." It was "will anyone change their habits for it."
+
+## Constraints
+
+Solo, self-funded, evenings and weekends. The business plan budgets a 6-month
+MVP with a $454K team on paper; the real constraint was that I had neither, so
+validation had to come before code. No user base to test against, so the
+waitlist landing page had to serve as the demand signal.
+
+## Decision
+
+The hard call was the pricing model. The plan I first wrote assumed families
+would pay a monthly subscription, framed around ~$12/mo ARPU. My actual target
+market was Indian households. When I checked that assumption against how Indian
+consumers actually behave, it fell apart: Indian users overwhelmingly don't pay
+app subscriptions.
+
+<DecisionPoint
+  question="FamilyOS needs a revenue model for the Indian household market. Which one?"
+  options={[
+    "Subscription (~₹300–₹800/mo) — clean, predictable, aligned with the US playbook",
+    "One-time purchase — removes recurring friction",
+    "Free for families, revenue from B2B/ads partners at moments of intent",
+  ]}
+  actual={2}
+>
+  Indian subscription conversion for utility apps is notoriously poor; I'd be
+  pricing out my own market. A one-time purchase removes friction but caps LTV
+  on exactly the users who engage most, with no recurring revenue to fund an
+  ongoing platform. Going free-for-families meant rewriting the revenue section
+  of the plan — which also changed the P0 roadmap: features that create
+  partner-relevant moments of intent (renewals, warranties, document expiry)
+  moved up.
+</DecisionPoint>
+
+## Outcome
+
+Live waitlist site with 60+ signups and no paid acquisition. The roadmap and
+business plan are complete; the app build is in progress.
+
+What went wrong: I wrote the entire first business plan US-framed — US
+household counts, dollar ARPU, US competitor set — while my actual target was
+Indian families. The numbers made the TAM look great and told me nothing about
+my real market. I had to redo the monetization thinking from scratch. The plan
+now keeps the global sizing for context, but the operating assumptions are
+Indian-market-first.
+
+## Learning
+
+Building for Indian families is a different discipline from any B2B platform
+I've worked on. Enterprise users tolerate friction if the tool saves their team
+money; families abandon anything that demands new habits, and they don't pay
+upfront. Validate the business model against the market you're actually in, not
+the market your template was written for.
+
+## Research artifacts
+
+Competitor gap analysis (Google Calendar, Mint, Apple Health, 1Password,
+Life360 — none cover the full household) and the P0–P2 prioritization rationale
+from the business plan.
+
+[Live waitlist site](https://family-os-opal-five.vercel.app/) — currently shows
+"Omni OS" branding, a placeholder name.
