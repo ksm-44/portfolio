@@ -8,6 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { usePathname } from "next/navigation";
 
 export interface VisitorStats {
   seconds: number;
@@ -59,19 +60,40 @@ function computeScore(s: VisitorStats): number {
   return Math.max(1, Math.min(99, Math.round(raw)));
 }
 
+/** Scroll depth (0-100) for the active page. 0 when the page doesn't scroll. */
+function currentScrollDepth(): number {
+  const doc = document.documentElement;
+  const max = doc.scrollHeight - window.innerHeight;
+  if (max <= 0) return 0;
+  return Math.min(100, Math.max(0, Math.round((window.scrollY / max) * 100)));
+}
+
 /** Tracks the visitor like a product would: scroll, clicks, rage, dwell. */
 export function AnalyticsProvider({ children }: { children: ReactNode }) {
   const [stats, setStats] = useState<VisitorStats>(initialStats);
   const clickTimes = useRef<number[]>([]);
+  const pathname = usePathname();
+
+  // Reset per-page scroll depth on route change so the previous page's max
+  // never carries over into the next one. Deferred a frame so the new page's
+  // height is what gets measured.
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      setStats((s) => ({ ...s, scrollDepth: currentScrollDepth() }));
+    });
+    return () => cancelAnimationFrame(id);
+  }, [pathname]);
 
   useEffect(() => {
-    const onScroll = () => {
-      const doc = document.documentElement;
-      const max = doc.scrollHeight - window.innerHeight;
-      const depth = max > 0 ? Math.round((window.scrollY / max) * 100) : 100;
-      setStats((s) =>
-        depth > s.scrollDepth ? { ...s, scrollDepth: depth } : s
-      );
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      const depth = currentScrollDepth();
+      // Deepest point reached on THIS page; navigation resets it above.
+      setStats((s) => (depth > s.scrollDepth ? { ...s, scrollDepth: depth } : s));
+    };
+    const onScrollOrResize = () => {
+      if (!frame) frame = requestAnimationFrame(measure);
     };
 
     const onClick = () => {
@@ -86,7 +108,9 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
       }));
     };
 
+    // Only accrue dwell time while the tab is actually visible.
     const tick = window.setInterval(() => {
+      if (document.visibilityState !== "visible") return;
       setStats((s) => {
         const next = { ...s, seconds: s.seconds + 1 };
         next.score = computeScore(next);
@@ -95,19 +119,30 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
       });
     }, 1000);
 
-    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize);
     window.addEventListener("click", onClick);
     return () => {
       window.clearInterval(tick);
-      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
       window.removeEventListener("click", onClick);
     };
   }, []);
 
   const recordDecision = () =>
-    setStats((s) => ({ ...s, decisions: s.decisions + 1 }));
+    setStats((s) => {
+      const next = { ...s, decisions: s.decisions + 1 };
+      next.score = computeScore(next);
+      return next;
+    });
   const recordConversion = () =>
-    setStats((s) => ({ ...s, conversions: s.conversions + 1 }));
+    setStats((s) => {
+      const next = { ...s, conversions: s.conversions + 1 };
+      next.score = computeScore(next);
+      return next;
+    });
 
   return (
     <AnalyticsContext.Provider value={{ stats, recordDecision, recordConversion }}>
