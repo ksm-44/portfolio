@@ -12,6 +12,8 @@ export interface ProjectFrontmatter {
   tags: string[];
   metrics: ProjectMetric[];
   featured: boolean;
+  /** Optional classifier: "Shipped" (default), "Concept", "Analysis", "Strategy", "Redesign", "Teardown". */
+  type?: string;
   cover?: string;
   draft?: boolean;
 }

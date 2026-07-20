@@ -62,6 +62,14 @@ positioning dies.
   and split expenses — the ones every tracker misses — actually get logged.
 </DecisionPoint>
 
+<Image
+  src="/finbot-telegram.png"
+  alt="Logging a transaction to FinBot over Telegram in plain language"
+  width={1318}
+  height={896}
+  caption="Capture is a Telegram message the way you'd text a friend: no app to open, no new habit to form."
+/>
+
 The second structural call: a double-entry ledger instead of a list of
 expenses. Every transaction posts entries against accounts; balances are the
 sum of entries, so transfers, splits, and card payments balance by
@@ -79,6 +87,14 @@ In daily use as my primary money system: every rupee across 6 accounts (banks,
 cash, credit card, Splitwise) flows through it. 1,000+ transactions in 2
 months. Zero balance drift by design. ~2,600 lines of Python from zero to
 production in two weeks, plus a self-hosting replication guide.
+
+<Image
+  src="/finbot-dashboard.png"
+  alt="FinBot web dashboard showing net worth across six accounts with balances verified"
+  width={1500}
+  height={812}
+  caption="The dashboard: multi-account net worth and budgets, with balances verified against a double-entry ledger."
+/>
 
 What went wrong: I spent early effort scoping the auto-import path before
 admitting it was a dead end for a solo builder. That was time I could have

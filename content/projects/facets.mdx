@@ -1,0 +1,51 @@
+---
+title: "Facets: shipping platform features for the users least likely to forgive you"
+summary: "Two years owning delivery on a B2B infrastructure-orchestration platform whose users were DevOps engineers and developers — the audience that taught me developers are the wrong people to ask about UI."
+date: "2025-10-01"
+role: "Product Manager (from APM & Intern)"
+company: "Facets.cloud"
+tags: ["Platform", "DevEx", "AI/MCP", "B2B SaaS"]
+metrics:
+  - { label: "release velocity improvement", value: "+30%" }
+  - { label: "faster Terraform module setup via MCP server", value: "-40%" }
+  - { label: "platform features shipped", value: "35+" }
+  - { label: "on-time delivery across initiatives", value: "95%" }
+featured: true
+---
+
+<Tldr
+  problem="A platform team shipping infrastructure workflows for DevOps engineers and developers — users who describe solutions instead of problems and who will route around anything that slows them down."
+  outcome="35+ features delivered, release velocity up ~30%, an MCP server that cut module setup ~40%, and a change in how I run product: validate before building, and design for adoption, not for shipping."
+/>
+
+<CaseToc />
+
+## Problem
+
+Facets is a B2B infrastructure-orchestration platform. My users were DevOps engineers and developers running deployments across enterprise clients — a group with strong opinions, low patience, and a habit of describing the fix they want rather than the problem they have. A ticket would arrive as "add a toggle here," and taken literally it would have shipped a toggle that solved nothing.
+
+The recurring failure was mistaking the feature request for the requirement. The interesting problems were one layer down: the deployment conflict the toggle was meant to avoid, the release that stalled because two teams touched the same environment, the setup step that quietly ate an afternoon every time.
+
+## Constraints
+
+A startup pace, a platform surface that couldn't afford instability, and an audience that measures you in minutes saved. Anything that added friction to an engineer's existing workflow was dead on arrival, no matter how capable it was underneath.
+
+## Decision
+
+I changed where the work started. Instead of taking a request and reaching for a standard framework to design against it, I sat through how people actually used the product and derived the real problem from their day-to-day. Then I looked at several solutions against user impact, company goals, revenue potential, technical feasibility, and what the market already did — and I thought through the full lifecycle of a solution before committing to it, shipping in phases where it made sense.
+
+That shift produced the features I'm most confident in: a Dynamic Launch Wizard, parallel releases, maintenance windows, blue/green and canary deployments — all aimed at the conflicts that were slowing releases down, which is where the ~30% velocity improvement came from. It also produced the Facets Module MCP Server, which let an LLM generate and validate Terraform modules from metadata and cut module setup time by roughly 40%.
+
+<Callout type="insight" title="Who you ask matters as much as what you ask">
+  I learned to stop taking UI feedback from DevOps engineers and developers. They're precise about capability and indifferent to interface — so their input pulled designs toward power and away from usability. When I wanted a feature to actually get adopted, the UX was the thing to get right, and the people to watch were the ones struggling, not the ones with the strongest opinions.
+</Callout>
+
+## Outcome
+
+Across initiatives I owned the roadmap and PRDs end to end with RICE and MoSCoW, and hit about 95% on-time delivery. Instrumenting the product with Mixpanel and Hotjar and building funnel and retention dashboards surfaced where people abandoned workflows, and closing those gaps reduced abandonment and shortened onboarding. A customer-intelligence loop built from NPS, interviews, and support-ticket analysis fed prioritization directly.
+
+The honest caveat: not every bet landed on the first try, and phased shipping meant living with roadblocks and changing direction mid-build more than once. I stopped treating that as failure — in a small startup, velocity often beats perfection, and a shipped-then-corrected feature usually taught me more than a delayed "perfect" one.
+
+## Learning
+
+The technically best solution is not automatically the right product solution. The one that wins is usually the simplest to learn and adopt. And shipping is only halfway — the real finish line is sustained adoption, which is why my process now runs all the way through validate, ship, adopt, monitor, and enhance rather than stopping at release.

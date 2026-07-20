@@ -4,7 +4,12 @@ import type { Project } from "@/types/content";
 import { Badge } from "@/components/ui/Badge";
 import { formatDate } from "@/lib/utils";
 
+/** Types that aren't shipped work get a visible label so nothing reads as more than it is. */
+const NON_SHIPPED = new Set(["Concept", "Analysis", "Strategy", "Redesign", "Teardown"]);
+
 export function ProjectCard({ project }: { project: Project }) {
+  const showType = project.type && NON_SHIPPED.has(project.type);
+
   return (
     <Link
       href={`/projects/${project.slug}`}
@@ -12,8 +17,15 @@ export function ProjectCard({ project }: { project: Project }) {
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="microlabel">
-            {project.company} · {formatDate(project.date)}
+          <p className="microlabel flex items-center gap-2">
+            <span>
+              {project.company} · {formatDate(project.date)}
+            </span>
+            {showType && (
+              <span className="rounded-sm border border-accent/40 px-1.5 py-0.5 text-[10px] uppercase tracking-[0.08em] text-accent">
+                {project.type} study
+              </span>
+            )}
           </p>
           <h3 className="mt-2.5 text-lg font-semibold leading-snug tracking-tightest text-ink">
             {project.title}

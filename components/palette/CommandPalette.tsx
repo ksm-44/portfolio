@@ -23,6 +23,7 @@ export function CommandPalette() {
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
 
   const close = useCallback(() => {
     setOpen(false);
@@ -84,6 +85,13 @@ export function CommandPalette() {
 
   useEffect(() => setIndex(0), [query]);
 
+  // Keep the keyboard-selected command visible as the user arrows past the fold.
+  useEffect(() => {
+    if (!open) return;
+    const active = listRef.current?.querySelector<HTMLElement>(`[data-idx="${index}"]`);
+    active?.scrollIntoView({ block: "nearest" });
+  }, [index, open, filtered.length]);
+
   const onInputKey = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
@@ -134,14 +142,14 @@ export function CommandPalette() {
               />
               <kbd className="rounded-sm border border-line px-1.5 py-0.5 font-mono text-[10px] text-ink-faint">esc</kbd>
             </div>
-            <ul role="listbox" aria-label="Commands" className="max-h-[46vh] overflow-y-auto p-2">
+            <ul ref={listRef} role="listbox" aria-label="Commands" className="max-h-[46vh] overflow-y-auto p-2">
               {filtered.length === 0 && (
                 <li className="px-3 py-4 font-mono text-sm text-ink-faint">
                   command not found. have you tried turning the roadmap off and on again?
                 </li>
               )}
               {filtered.map((cmd, i) => (
-                <li key={cmd.id} role="option" aria-selected={i === index}>
+                <li key={cmd.id} role="option" aria-selected={i === index} data-idx={i}>
                   <button
                     type="button"
                     onClick={() => {

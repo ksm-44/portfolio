@@ -19,10 +19,10 @@ export const careerLog: CareerCommit[] = [
   {
     hash: "d83be07",
     type: "feat",
-    message: "feat: move to Perfios for fintech",
+    message: "feat: join Perfios as Associate Product Manager II",
     date: "2025",
     details:
-      "Wanted the domain, not just the craft: financial document intelligence, LLM configuration for 20+ enterprise clients, HITL workflow design.",
+      "Wanted the domain, not just the craft. On the platform team (DIB, PAE, Perflo) I run prompt engineering and LLM configuration for 20+ enterprise clients, architect BRE policy frameworks and end-to-end customer journeys, and design HITL workflows for document intelligence. Fintech rewired how I think about products: security, accuracy, and stability outrank speed, and banks adopt AI cautiously — so trust is the design constraint.",
   },
   {
     hash: "9c2f5a1",
@@ -30,7 +30,7 @@ export const careerLog: CareerCommit[] = [
     message: "merge: intern → full-time Product Manager at Facets",
     date: "2024",
     details:
-      "My users were DevOps engineers and developers — the hardest audience to please. 35+ features, a 30% release velocity improvement, and an MCP server for AI-driven infra workflows.",
+      "My users were DevOps engineers and developers — the hardest audience to please, and the one that taught me developers are the wrong people to ask about UI. 35+ features, a 30% release velocity improvement, and an MCP server for AI-driven infra workflows.",
   },
   {
     hash: "71e0bd4",

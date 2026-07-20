@@ -1,0 +1,39 @@
+---
+title: "Cutting first-attempt drop-off in Indian SMB merchant onboarding"
+summary: "A concept for reducing abandonment during KYB/merchant onboarding on a mid-market Indian payments or lending platform — framed as hypotheses I would test, not results I'm claiming."
+date: "2026-07-05"
+role: "Self-directed concept study"
+company: "Concept study"
+type: "Concept"
+tags: ["Fintech", "Onboarding", "KYB"]
+metrics:
+  - { label: "planned merchant interviews before building", value: "8–10" }
+  - { label: "primary metric (to baseline, then target)", value: "onboarding completion" }
+featured: false
+---
+
+<Callout type="warning" title="Concept study — not shipped work">
+  This is a concept exercise: real, current market analysis plus genuine product reasoning, stopping honestly at a hypothesis and a measurement plan. There are no invented outcome metrics — nothing here claims a result I haven't produced. Sections that depend on primary research are marked as planned validation.
+</Callout>
+
+## Why this problem
+
+Merchant onboarding in India sits on a hard constraint: RBI and SEBI mandate rigorous identity and business verification, so you can't reduce friction by asking for less. The real product question isn't "how do we remove KYC" but "how do we sequence unavoidable verification so fewer legitimate merchants abandon." I can reason about this credibly from working adjacent to document intelligence and KYB — which is also why I'm careful to separate what I know from what I'd need to test.
+
+## The problem, as a hypothesis
+
+For a mid-market platform onboarding small merchants, a large share of drop-off likely happens *before* verification even runs — because the flow front-loads document collection (PAN, GST, Udyam, bank proof, director details) into a long upfront gauntlet, and rejections return generic errors with no fix path.
+
+What I can assert from real evidence: the Indian KYB/KYC stack is fragmented across specialised vendors (Signzy, HyperVerge, IDfy, Karza, Digio, Surepass, Bureau), each strong on a different piece. A platform stitches several together, so the onboarding experience is only as good as the orchestration on top — and orchestration is usually an afterthought. What I would *not* assert without research: the exact drop-off rate or the step where it peaks.
+
+## Options
+
+**A — Ops + transparency:** better verification SLAs and a status tracker with specific rejection reasons. Low effort, low risk, modest ceiling. **B — Progressive onboarding with provisional access:** run cheap checks first, grant capped provisional capability while heavier verification completes, and turn rejections into guided fixes. High effort and material fraud/compliance risk. **C — Orchestration + smart routing:** route each merchant to the best verification path per profile and pre-fill from GST/MCA data.
+
+## Recommendation
+
+C first, then B only if regulatory scoping clears it. I'd explicitly reject B-first: shipping provisional access before scoping fraud aperture and regulatory limits is how a regulated-fintech feature becomes an incident. The trade-off I'd accept in going C-first is a smaller headline improvement in exchange for something I'm confident is compliant and shippable.
+
+## What I'd validate and measure
+
+8–10 merchant interviews to locate the real drop point; a rejection-reason audit to test my prior that most rejections are fixable formatting rather than genuine ineligibility; and regulatory scoping on what "provisional access" can legally look like. North star: onboarding completion rate, target set only after baselining. Guardrail for option B: a fraud-incidents metric co-owned with a risk team.
