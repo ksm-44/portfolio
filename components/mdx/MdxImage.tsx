@@ -16,7 +16,7 @@ export function MdxImage({ src, alt, caption, width = 1200, height = 675 }: MdxI
         alt={alt}
         width={width}
         height={height}
-        className="w-full rounded-xl border border-line"
+        className="h-auto w-full rounded-xl border border-line"
         sizes="(max-width: 768px) 100vw, 768px"
       />
       {caption && (
