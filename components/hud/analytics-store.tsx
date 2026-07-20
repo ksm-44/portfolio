@@ -8,6 +8,16 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { usePathname } from "next/navigation";
+
+/** Scroll depth of the current document, 0–100. Full page = 100. */
+function currentScrollDepth(): number {
+  if (typeof window === "undefined") return 0;
+  const doc = document.documentElement;
+  const max = doc.scrollHeight - window.innerHeight;
+  if (max <= 0) return 100; // page fits the viewport — it's fully seen
+  return Math.min(100, Math.round((window.scrollY / max) * 100));
+}
 
 export interface VisitorStats {
   seconds: number;
@@ -63,12 +73,20 @@ function computeScore(s: VisitorStats): number {
 export function AnalyticsProvider({ children }: { children: ReactNode }) {
   const [stats, setStats] = useState<VisitorStats>(initialStats);
   const clickTimes = useRef<number[]>([]);
+  const pathname = usePathname();
+
+  // Scroll depth is a per-page measure, so reset it on every client navigation.
+  // Also measure once on entry so unscrollable pages don't get stuck at a stale value.
+  useEffect(() => {
+    const id = window.requestAnimationFrame(() =>
+      setStats((s) => ({ ...s, scrollDepth: currentScrollDepth() }))
+    );
+    return () => window.cancelAnimationFrame(id);
+  }, [pathname]);
 
   useEffect(() => {
     const onScroll = () => {
-      const doc = document.documentElement;
-      const max = doc.scrollHeight - window.innerHeight;
-      const depth = max > 0 ? Math.round((window.scrollY / max) * 100) : 100;
+      const depth = currentScrollDepth();
       setStats((s) =>
         depth > s.scrollDepth ? { ...s, scrollDepth: depth } : s
       );

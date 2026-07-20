@@ -33,14 +33,28 @@ function parseProject(fileName: string): Project {
   };
 }
 
-/** All published projects, newest first. */
+/** Non-shipped classifiers always sort after real shipped work. */
+const NON_SHIPPED = new Set(["Concept", "Analysis", "Strategy", "Redesign", "Teardown"]);
+
+/** 0 = professional shipped, 1 = personal shipped, 2 = concept/analysis. */
+function tier(p: Project): number {
+  if (p.type && NON_SHIPPED.has(p.type)) return 2;
+  return p.company === "Personal project" ? 1 : 0;
+}
+
+/**
+ * Ordering: professional case studies lead, then personal side projects, then
+ * concept/analysis pieces honestly last. Newest-first within each tier.
+ */
 export function getAllProjects(): Project[] {
   return fs
     .readdirSync(PROJECTS_DIR)
     .filter((f) => f.endsWith(".mdx") && !f.startsWith("_"))
     .map(parseProject)
     .filter((p) => !p.draft)
-    .sort((a, b) => +new Date(b.date) - +new Date(a.date));
+    .sort(
+      (a, b) => tier(a) - tier(b) || +new Date(b.date) - +new Date(a.date)
+    );
 }
 
 export function getFeaturedProjects(): Project[] {
