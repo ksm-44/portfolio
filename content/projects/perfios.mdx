@@ -1,0 +1,51 @@
+---
+title: "Perfios: product for institutions that choose stability over speed"
+summary: "Owning use cases on an AI-powered financial document-intelligence platform, where the users are banks and lenders and the non-negotiables are security, accuracy, and trust."
+date: "2025-10-15"
+role: "Associate Product Manager II"
+company: "Perfios.ai"
+tags: ["Fintech", "Document Intelligence", "LLM", "HITL"]
+metrics:
+  - { label: "prospects demoed → pipeline → production", value: "12 → 9 → 3" }
+  - { label: "client go-live setup time", value: "-30%" }
+  - { label: "manual review for credit operations", value: "-50%" }
+  - { label: "Mediclaim processing TAT (projected)", value: "-20%" }
+featured: true
+---
+
+<Tldr
+  problem="Onboarding banks and lenders onto a classification-and-extraction platform, where every domain is different and correctness is a compliance requirement, not a nice-to-have."
+  outcome="Onboarded multiple use cases from research to production, cut client go-live setup ~30%, and roughly halved manual review for credit operations — while learning that in fintech, trust is the product."
+/>
+
+<CaseToc />
+
+## Problem
+
+Perfios is an AI-powered financial document-intelligence platform. On the platform team, I onboard enterprise use cases — an asset-reconstruction company, lenders, and others — onto the classification and extraction engine. That means domain research, schema configuration, and live demos, then carrying the winning cases all the way into production.
+
+The core difficulty is that the users are financial institutions. Their tolerance for error is close to zero, and a confidently wrong extraction on a financial document is worse than no extraction at all. Every domain also turned out to be its own world: the same principles that worked for one use case did not transfer cleanly to the next, because the documents, the risk, and the operators were different each time.
+
+## Constraints
+
+Security, accuracy, and compliance sit above speed and novelty. Banks and financial institutions adopt new technology — AI especially — far more cautiously than startups, and they prefer stability to being first. That reality shapes every design choice: the product has to earn trust before it earns usage.
+
+## Decision
+
+I leaned into human-in-the-loop rather than fighting it. Across checklist validation, bank onboarding and KYC, and application filling and signing, I architected the policy frameworks and end-to-end customer journeys so that automation handled the volume and humans stayed on the decisions that carried real risk. I delivered four use cases end to end — spanning extraction, fraud, and validation logic plus the UI — which cut manual review effort for credit-operations teams by about half.
+
+I also led prompt engineering and LLM configuration for 20+ enterprise clients, which reduced go-live setup time by roughly 30% and got clients to value faster. For the Mediclaim agent, I diagnosed the turnaround-time bottlenecks with the UX and reworked the HITL flow, projecting a ~20% cut in processing TAT.
+
+<Callout type="insight" title="Context beats frameworks">
+  The biggest shift from working in fintech was realizing product principles aren't universal. Unlike consumer products, a bank weights security, accuracy, and stability over speed. Keeping a human on the risky decisions wasn't a limitation to design around — it was the feature that made institutions comfortable enough to adopt at all.
+</Callout>
+
+## Outcome
+
+Of 12 enterprise prospects I ran domain research, schema configuration, and demos for, 9 advanced into the active sales pipeline and 3 reached production. I also took the extraction platform's UI/UX from research through design to a shipped release.
+
+The trade-off I accepted: this is deliberately not the fastest way to build. Choosing stability, audit-ability, and human checkpoints means slower, more conservative releases than a consumer product would tolerate. In this market that's the right call — but it's a genuine cost, and naming it honestly is part of the job.
+
+## Learning
+
+Every domain and its users are unique; you can't lift principles from one use case and drop them on another. And in fintech specifically, security and accuracy are the product — get those wrong once and no amount of speed or polish buys the trust back.

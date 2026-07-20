@@ -1,0 +1,37 @@
+---
+title: "Turning portfolio red flags into action for Indian retail investors"
+summary: "A concept for the gap between Indian portfolio apps that flag problems and actually helping investors act — within the constraint that non-RIA products legally can't give personalised advice. A strategy and test plan, not claimed results."
+date: "2026-07-03"
+role: "Self-directed concept study"
+company: "Concept study"
+type: "Concept"
+tags: ["Fintech", "Investing", "India"]
+metrics:
+  - { label: "planned investor interviews", value: "8–10" }
+  - { label: "north star", value: "considered next-step rate" }
+featured: false
+---
+
+<Callout type="warning" title="Concept study — not shipped work">
+  A concept exercise connected to my own India Portfolio Analyzer. Analysis I've genuinely run on my own real portfolio data is real evidence; product outcomes here remain hypotheses. No invented results.
+</Callout>
+
+## Why this problem
+
+I built an India Portfolio Analyzer as a personal tool and saw the pattern first-hand: analysis is easy to generate, but "so what do I do now" is where retail investors get stuck. There's a genuinely interesting constraint that makes this a real product problem, not a feature request: SEBI regulation. Only registered advisers can give personalised, accountable advice; everyone else must stay general and educational. So the challenge is making analysis feel actionable without crossing into regulated advice you're not licensed to give.
+
+## Real competitive landscape
+
+**INDmoney** aggregates MFs, stocks, US equities, and shows where you deviate from targets — but it explicitly isn't a SEBI-registered adviser, so its suggestions stay general. **Dezerv's Wealth Monitor** benchmarks each fund's XIRR and assigns statuses, while its business monetises via managed portfolios — strong at diagnosis and steering toward its own products. **Kuvera** and **Groww** cover direct plans. The consistent theme: everyone is good at flagging; the honest, conflict-free "what should I do, and can I trust why" layer is thin — partly because regulation makes it hard, partly because several players' business models create advice conflicts.
+
+## The gap, as a hypothesis
+
+Retail investors don't primarily lack analysis — they lack a trustworthy, non-conflicted bridge from a flag to a decision they understand well enough to act on. The winning move isn't more diagnostics; it's decision scaffolding: explain a flag in plain language, lay out the options (not a directive), show the trade-offs, and be transparent that it isn't personalised advice — turning the regulatory constraint into a trust feature.
+
+## Options and recommendation
+
+**A — better diagnostics:** adds to the pile everyone has. **B — decision-scaffolding layer:** plain-language explanation, 2–3 option paths with trade-offs, explicit "not personalised advice" framing. **C — RIA-marketplace bridge:** stay educational, then hand off to fee-only registered advisers for accountable advice. I'd build **B as the core, with C as the escape hatch**. I'd reject anything that dresses up general suggestions as personalised advice — that's both a regulatory risk and exactly the conflict users distrust. Trade-off: B is slower and demands real content and UX craft, and its ceiling depends on how much value is legally deliverable without an RIA licence.
+
+## What I'd validate and measure
+
+8–10 interviews with the self-directed ₹5–50L segment on where they get stuck between seeing a flag and acting; a recurring-flags analysis from my own portfolio-analyzer outputs; and regulatory scoping on permissible educational framing. North star: the share of flagged issues where the user takes a considered next step — an action metric, not a vanity view. Guardrail: zero complaints of misleading, advice-like framing.
