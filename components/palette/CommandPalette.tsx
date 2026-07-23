@@ -16,6 +16,9 @@ interface Command {
   run: () => void;
 }
 
+/** Long enough to read the toast, short enough that it doesn't feel broken. */
+const SUDO_REDIRECT_MS = 1200;
+
 export function CommandPalette() {
   const router = useRouter();
   const { resolvedTheme, setTheme } = useTheme();
@@ -24,6 +27,7 @@ export function CommandPalette() {
   const [index, setIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
+  const sudoTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const close = useCallback(() => {
     setOpen(false);
@@ -47,7 +51,18 @@ export function CommandPalette() {
       { id: "rice", label: "run rice-calculator", hint: "Should you hire me?", keywords: "rice hire calculator score", run: () => router.push("/hire-me") },
       { id: "theme", label: "toggle --theme", hint: "Dark/light mode", keywords: "theme dark light mode", run: () => setTheme(resolvedTheme === "dark" ? "light" : "dark") },
       { id: "email", label: "mail -s 'hello'", hint: "Copy email", keywords: "email contact copy", run: () => { void navigator.clipboard.writeText(siteConfig.author.email); toast("Email copied. Response SLA: surprisingly fast."); } },
-      { id: "sudo", label: "sudo hire-me", hint: "Escalate privileges", keywords: "sudo hire root", run: () => toast("Permission granted. Offer letter compiling…") },
+      {
+        id: "sudo",
+        label: "sudo hire-me",
+        hint: "Escalate privileges",
+        keywords: "sudo hire root",
+        run: () => {
+          toast("Permission granted. Offer letter compiling…");
+          router.prefetch("/hire-me");
+          if (sudoTimer.current) clearTimeout(sudoTimer.current);
+          sudoTimer.current = setTimeout(() => router.push("/hire-me"), SUDO_REDIRECT_MS);
+        },
+      },
       { id: "404", label: "open /missing-page", hint: "Play the 404 game", keywords: "404 game whack backlog", run: () => router.push("/this-page-does-not-exist") },
       { id: "features", label: "ls --features", hint: "Every widget on this site", keywords: "features widgets list help what can this do", run: () => router.push("/features") },
       { id: "boot", label: "reboot pm-os", hint: "Replay the boot sequence", keywords: "boot reboot replay loader intro", run: () => emit("replay-boot") },
@@ -78,6 +93,14 @@ export function CommandPalette() {
       off();
     };
   }, [close]);
+
+  // Don't leave a pending redirect behind if the palette unmounts first.
+  useEffect(
+    () => () => {
+      if (sudoTimer.current) clearTimeout(sudoTimer.current);
+    },
+    []
+  );
 
   useEffect(() => {
     if (open) inputRef.current?.focus();
